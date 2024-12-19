@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+struct node* c_node(int data) {
+    struct node *n = (struct node*)(malloc(sizeof(struct node)));
+    n->data = data;
+    n->left = NULL;
+    n->right = NULL;
+    return n;
+}
+
+void insert(struct node **head, int data) {
+    struct node *n = c_node(data);
+    if (*head == NULL) {
+        *head = n;
+        return;
+    }
+    struct node *temp = *head;
+    struct node *t_prev = NULL;
+    while (temp) {
+        t_prev = temp;
+        if (temp->data < data) {
+            temp = temp->right;
+        } else {
+            temp = temp->left;
+        }
+    }
+    if (t_prev->data < data) {
+        t_prev->right = n;
+    } else {
+        t_prev->left = n;
+    }
+}
+
+void in_traversal(struct node *head) {
+    if (head == NULL) {
+        return;
+    }
+    in_traversal(head->left);
+    printf("%d ", head->data);
+    in_traversal(head->right);
+}
+
+void pr_traversal(struct node *head) {
+    if (head == NULL) {
+        return;
+    }
+    printf("%d ", head->data);
+    pr_traversal(head->left);
+    pr_traversal(head->right);
+}
+
+void ps_traversal(struct node *head) {
+    if (head == NULL) {
+        return;
+    }
+    ps_traversal(head->left);
+    ps_traversal(head->right);
+    printf("%d ", head->data);
+}
+
+int main() {
+    struct node *head = NULL;
+    int choice, value;
+
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Insert a node\n");
+        printf("2. Display in-order traversal\n");
+        printf("3. Display pre-order traversal\n");
+        printf("4. Display post-order traversal\n");
+        printf("5. Exit\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter the value to insert: ");
+                scanf("%d", &value);
+                insert(&head, value);
+                break;
+            case 2:
+                printf("In-order traversal: ");
+                in_traversal(head);
+                printf("\n");
+                break;
+            case 3:
+                printf("Pre-order traversal: ");
+                pr_traversal(head);
+                printf("\n");
+                break;
+            case 4:
+                printf("Post-order traversal: ");
+                ps_traversal(head);
+                printf("\n");
+                break;
+            case 5:
+                printf("Exiting the program.\n");
+                exit(0);
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+
+    return 0;
+}
+
